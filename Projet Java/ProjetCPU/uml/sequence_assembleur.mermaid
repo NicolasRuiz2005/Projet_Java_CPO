@@ -1,0 +1,53 @@
+sequenceDiagram
+    title Diagramme de séquence — Assemblage d'un programme
+
+    actor Utilisateur
+    participant Assembler
+    participant Memory
+
+    Utilisateur->>Assembler: assemble(source)
+
+    Note over Assembler: ── PASSE 1 : Collecte des labels ──
+    loop Pour chaque ligne du source
+        Assembler->>Assembler: cleanLine(line)
+        alt La ligne est un label (ex: "boucle:")
+            Assembler->>Assembler: labelTable.put(label, writePointer)
+        else La ligne est une instruction
+            Assembler->>Assembler: computeInstructionSize(line)
+            Assembler->>Assembler: writePointer += taille
+        end
+    end
+
+    Note over Assembler: ── PASSE 2 : Émission du code machine ──
+    Assembler->>Assembler: writePointer = 0
+    loop Pour chaque ligne du source
+        Assembler->>Assembler: cleanLine(line)
+        Assembler->>Assembler: tokenize(line)
+        alt LOAD_CONST
+            Assembler->>Memory: write(ptr++, LOAD_CONST)
+            Assembler->>Memory: write(ptr++, reg)
+            Assembler->>Memory: write(ptr++, valeur)
+        else LOAD_MEM
+            Assembler->>Memory: write(ptr++, LOAD_MEM)
+            Assembler->>Memory: write(ptr++, reg)
+            Assembler->>Memory: write(ptr++, addrHigh)
+            Assembler->>Memory: write(ptr++, addrLow)
+        else JUMP / BEQ / BNE avec label
+            Assembler->>Assembler: resolveAddress(label) → labelTable.get(label)
+            Assembler->>Memory: write(ptr++, opcode)
+            Assembler->>Memory: write(ptr++, addrHigh)
+            Assembler->>Memory: write(ptr++, addrLow)
+        else DATA
+            loop Pour chaque valeur
+                Assembler->>Memory: write(ptr++, valeur)
+            end
+        else STRING
+            Assembler->>Assembler: extractStringLiteral(line)
+            loop Pour chaque byte UTF-8
+                Assembler->>Memory: write(ptr++, byte)
+            end
+            Assembler->>Memory: write(ptr++, 0) [terminateur null]
+        end
+    end
+
+    Assembler-->>Utilisateur: (code machine en mémoire, writePointer = taille)
