@@ -2,7 +2,7 @@ package alu;
 
 /**
  * Unité Arithmétique et Logique (ALU) du simulateur de CPU.
- *
+ * <p>L'ALU fournit des méthodes statiques pour effectuer des opérations
  * <p>Cette classe regroupe toutes les opérations mathématiques et
  * bit-à-bit supportées par le processeur. Chaque opération travaille
  * sur des valeurs {@code byte} (8 bits signés, −128 à 127).</p>
