@@ -1,0 +1,202 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<diagram program="umlet" version="15.1">
+  <zoom_level>11</zoom_level>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>891</x>
+      <y>253</y>
+      <w>363</w>
+      <h>154</h>
+    </coordinates>
+    <panel_attributes>&lt;&lt;Class&gt;&gt;
+Assembler
+--
+
+--
++ assemble(sourceCode : String) : void
+- parseLine(line : String, currentAddress : int) : void
+- processDataDirective(params : String[]) : void
+- processStringDirective(param : String) : void</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>682</x>
+      <y>77</y>
+      <w>198</w>
+      <h>99</h>
+    </coordinates>
+    <panel_attributes>&lt;&lt;Class&gt;&gt;
+Simulateur
+--
+
+--
++ main(args : String[]) : void
+--</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>451</x>
+      <y>242</y>
+      <w>264</w>
+      <h>165</h>
+    </coordinates>
+    <panel_attributes>&lt;&lt;Class&gt;&gt;
+CPU
+--
+- pc : short
+- isRunning : boolean
+--
++ run() : void
++ step() : void
+- fetch() : byte
+- decode(opcode : byte) : Instruction</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>220</x>
+      <y>517</y>
+      <w>264</w>
+      <h>121</h>
+    </coordinates>
+    <panel_attributes>&lt;&lt;Class&gt;&gt;
+RegisterManager
+--
+- registers : byte[16]
+--
++ get(index : int) : byte
++ set(index : int, value : byte) : void</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>1144</x>
+      <y>484</y>
+      <w>319</w>
+      <h>143</h>
+    </coordinates>
+    <panel_attributes>&lt;&lt;Class&gt;&gt;
+Memory
+--
+- data : byte[65536]
+--
++ read(address : int) : byte
++ write(address : int, value : byte) : void
++ readWord(address : int) : short
++ writeWord(address : int, value : short) : void</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>539</x>
+      <y>594</y>
+      <w>528</w>
+      <h>99</h>
+    </coordinates>
+    <panel_attributes>&lt;&lt;Interface&gt;&gt;
+Instruction
+--
+
+--
++ execute(cpu : CPU, memory : Memory, registers : RegisterManager) : void</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>836</x>
+      <y>165</y>
+      <w>121</w>
+      <h>110</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-
+utilise</panel_attributes>
+    <additional_attributes>90.0;80.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>671</x>
+      <y>165</y>
+      <w>110</w>
+      <h>99</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-
+initialise</panel_attributes>
+    <additional_attributes>10.0;70.0;80.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1111</x>
+      <y>396</y>
+      <w>132</w>
+      <h>110</h>
+    </coordinates>
+    <panel_attributes>lt=-
+m1=1
+m2=1
+&lt; peuple</panel_attributes>
+    <additional_attributes>70.0;80.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>671</x>
+      <y>396</y>
+      <w>88</w>
+      <h>220</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;.
+execute</panel_attributes>
+    <additional_attributes>20.0;180.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>792</x>
+      <y>165</y>
+      <w>374</w>
+      <h>374</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-
+initialise</panel_attributes>
+    <additional_attributes>320.0;320.0;80.0;250.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>330</x>
+      <y>396</y>
+      <w>165</w>
+      <h>143</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;&lt;&lt;-
+m1=1
+m2=1
+possede</panel_attributes>
+    <additional_attributes>130.0;10.0;10.0;110.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>704</x>
+      <y>396</y>
+      <w>462</w>
+      <h>209</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;&lt;&lt;-
+m1=1
+m2=1
+accede</panel_attributes>
+    <additional_attributes>10.0;10.0;400.0;170.0</additional_attributes>
+  </element>
+</diagram>
