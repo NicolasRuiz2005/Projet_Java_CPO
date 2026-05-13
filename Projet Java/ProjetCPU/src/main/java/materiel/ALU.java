@@ -26,6 +26,7 @@ public class ALU {
     public byte ouBinaire(byte a, byte b) {
         return (byte) (a | b);
     }
+    
 
     public byte etBinaire(byte a, byte b) {
         return (byte) (a & b);
