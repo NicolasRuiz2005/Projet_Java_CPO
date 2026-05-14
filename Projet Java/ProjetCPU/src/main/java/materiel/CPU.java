@@ -1,6 +1,6 @@
 package materiel;
-import instructions.Instruction;
 import assembleur.Programme;
+import instructions.Instruction;
 public class CPU {
     private int pc;
     private boolean enRoute;
