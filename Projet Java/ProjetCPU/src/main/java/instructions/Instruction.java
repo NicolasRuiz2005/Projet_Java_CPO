@@ -9,6 +9,13 @@ public class Instruction {
     private TypeInstruction type;
     private int ligne;
     private int[] operandes;
+    /*
+     * Crée une instruction avec son type, son numéro de ligne et ses opérandes
+     *
+     * @param type Le type de l'instruction (ADD, SUB, LOAD, etc.)
+     * @param ligne Le numéro de ligne dans le code source (pour les messages d'erreur)
+     * @param operandes Les opérandes de l'instruction (numéros de registres ou adresses)
+     */
     public Instruction(TypeInstruction type, int ligne, int[] operandes) {
 
         this.type = type;
@@ -16,18 +23,39 @@ public class Instruction {
         this.operandes = operandes;
     }
 
+    /*
+     * Retourne le type de l'instruction
+     *
+     * @return Le type de l'instruction
+     */
     public TypeInstruction getType() {
         return type;
     }
 
+    /*
+     * Retourne le numéro de ligne de l'instruction dans le code source
+     *
+     * @return Le numéro de ligne
+     */
     public int getLigne() {
         return ligne;
     }
 
+    /*
+     * Retourne les opérandes de l'instruction
+     *
+     * @return Le tableau des opérandes (numéros de registres ou adresses)
+     */
     public int[] getOperandes() {
         return operandes;
     }
 
+    /*
+     * Exécute l'instruction sur le CPU et la mémoire donnés
+     *
+     * @param cpu Le processeur sur lequel exécuter l'instruction
+     * @param mem La mémoire principale utilisée par l'instruction
+     */
     public void executer(CPU cpu, Memoire mem) {
 
         ALU alu = cpu.getALU();
