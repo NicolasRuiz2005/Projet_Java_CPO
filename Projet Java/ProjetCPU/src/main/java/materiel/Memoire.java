@@ -17,6 +17,7 @@ public class Memoire {
      * @return L'octet stocké à cette adresse
      */
     public byte lire(int adr) {
+    	checkAddress(adr);
         return cases[adr];
     }
 
@@ -27,6 +28,7 @@ public class Memoire {
      * @param val La valeur à écrire
      */
     public void ecrire(int adr, byte val) {
+    	checkAddress(adr);
         cases[adr] = val;
     }
 

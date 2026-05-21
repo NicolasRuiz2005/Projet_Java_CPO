@@ -180,8 +180,7 @@ public class Instruction {
                 // Ces directives ne s'exécutent pas — elles servent l'assembleur
                 // pour réserver et initialiser des octets en mémoire.
                 break;
-            default:
-                throw new IllegalStateException("Type d'instruction inconnu : " + type);
         }
+
     }
 }
