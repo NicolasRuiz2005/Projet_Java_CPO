@@ -20,39 +20,24 @@ class MemoireTest {
     }
 
     @Test
-    void lectureInitiale_retourneZero() {
+    void lireEcrire_casNormaux() {
+        // Lecture initiale → 0
         assertEquals(0, memoire.lire(0));
         assertEquals(0, memoire.lire(1000));
         assertEquals(0, memoire.lire(65535));
-    }
-
-    @Test
-    void ecrire_puisLire_retourneValeur() {
+        // Écriture puis lecture
         memoire.ecrire(100, (byte) 42);
         assertEquals(42, memoire.lire(100));
-    }
-
-    @Test
-    void ecrire_adresseBasse_limiteMin() {
+        // Limites basse et haute
         memoire.ecrire(0, (byte) 1);
         assertEquals(1, memoire.lire(0));
-    }
-
-    @Test
-    void ecrire_adresseHaute_limiteMax() {
         memoire.ecrire(65535, (byte) -1);
         assertEquals(-1, memoire.lire(65535));
-    }
-
-    @Test
-    void ecrire_ecraseLaValeurPrecedente() {
+        // Écrasement de la valeur précédente
         memoire.ecrire(50, (byte) 10);
         memoire.ecrire(50, (byte) 20);
         assertEquals(20, memoire.lire(50));
-    }
-
-    @Test
-    void ecrire_casesIndependantes() {
+        // Cases indépendantes
         memoire.ecrire(10, (byte) 5);
         memoire.ecrire(20, (byte) 7);
         assertEquals(5, memoire.lire(10));

@@ -9,15 +9,11 @@ import instructions.TypeInstruction;
 class ProgrammeTest {
 
     @Test
-    void constructeur_codeSourceCorrect() {
+    void constructeur_etEtatInitial() {
         Programme prog = new Programme("LOAD R0, 5");
         assertEquals("LOAD R0, 5", prog.getCodeSource());
-    }
-
-    @Test
-    void estAssemble_falseAuDepart() {
-        Programme prog = new Programme("");
         assertFalse(prog.estAssemble());
+        assertEquals(0, prog.nombreInstructions());
     }
 
     @Test
@@ -28,25 +24,14 @@ class ProgrammeTest {
     }
 
     @Test
-    void nombreInstructions_listeVide_retourneZero() {
+    void gestionInstructions() {
         Programme prog = new Programme("");
         assertEquals(0, prog.nombreInstructions());
-    }
-
-    @Test
-    void ajouterInstruction_incrementeNombreInstructions() {
-        Programme prog = new Programme("");
-        prog.ajouterInstruction(new Instruction(TypeInstruction.BREAK, 1, new int[]{}));
+        Instruction inst = new Instruction(TypeInstruction.JUMP, 1, new int[]{5});
+        prog.ajouterInstruction(inst);
         assertEquals(1, prog.nombreInstructions());
         prog.ajouterInstruction(new Instruction(TypeInstruction.BREAK, 2, new int[]{}));
         assertEquals(2, prog.nombreInstructions());
-    }
-
-    @Test
-    void getInstruction_retourneLaBonneInstruction() {
-        Programme prog = new Programme("");
-        Instruction inst = new Instruction(TypeInstruction.JUMP, 1, new int[]{5});
-        prog.ajouterInstruction(inst);
         assertSame(inst, prog.getInstruction(0));
     }
 }

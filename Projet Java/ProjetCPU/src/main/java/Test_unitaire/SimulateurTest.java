@@ -19,14 +19,10 @@ class SimulateurTest {
     // =========================================================
 
     @Test
-    void constructeur_tousLesRegistresInitialisesAZero() {
+    void etatInitial() {
         for (int i = 0; i < 16; i++) {
             assertEquals(0, sim.consulterRegistre(i), "R" + i + " devrait valoir 0");
         }
-    }
-
-    @Test
-    void constructeur_memoireInitialiseeAZero() {
         assertEquals(0, sim.consulterMemoire(0));
         assertEquals(0, sim.consulterMemoire(1000));
         assertEquals(0, sim.consulterMemoire(65535));
@@ -59,7 +55,6 @@ class SimulateurTest {
     @Test
     void executerProgramme_sansAssembler_lancerIllegalStateException() {
         sim.saisirProgramme("BREAK");
-        // assembler() non appelé → programme non assemblé
         assertThrows(IllegalStateException.class, () -> sim.executerProgramme());
     }
 
@@ -75,18 +70,10 @@ class SimulateurTest {
     // =========================================================
 
     @Test
-    void consulterRegistre_valeurInitiale_zero() {
+    void consulterEtModifierRegistre_casNormaux() {
         assertEquals(0, sim.consulterRegistre(3));
-    }
-
-    @Test
-    void modifierRegistre_puisConsulter_retourneValeur() {
         sim.modifierRegistre(5, (byte) 42);
         assertEquals(42, sim.consulterRegistre(5));
-    }
-
-    @Test
-    void modifierRegistre_ecraseLaValeurPrecedente() {
         sim.modifierRegistre(0, (byte) 10);
         sim.modifierRegistre(0, (byte) 20);
         assertEquals(20, sim.consulterRegistre(0));
@@ -117,18 +104,10 @@ class SimulateurTest {
     // =========================================================
 
     @Test
-    void consulterMemoire_valeurInitiale_zero() {
+    void consulterEtModifierMemoire_casNormaux() {
         assertEquals(0, sim.consulterMemoire(500));
-    }
-
-    @Test
-    void modifierMemoire_puisConsulter_retourneValeur() {
         sim.modifierMemoire(100, (byte) 77);
         assertEquals(77, sim.consulterMemoire(100));
-    }
-
-    @Test
-    void modifierMemoire_ecraseLaValeurPrecedente() {
         sim.modifierMemoire(50, (byte) 5);
         sim.modifierMemoire(50, (byte) 9);
         assertEquals(9, sim.consulterMemoire(50));
@@ -160,7 +139,6 @@ class SimulateurTest {
 
     @Test
     void integration_loadEtSub_resultatDansRegistre() {
-        // Exemple de Main.java : 3 - 1 = 2 dans R3
         sim.saisirProgramme(
             "LOAD R1, 3\n" +
             "LOAD R2, 1\n" +
@@ -186,7 +164,6 @@ class SimulateurTest {
 
     @Test
     void integration_loadMemoire_viaModifierMemoire() {
-        // On pré-charge la mémoire, puis on lit via instruction LOAD
         sim.modifierMemoire(200, (byte) 99);
         sim.saisirProgramme(
             "LOAD R0, [200]\n" +
@@ -199,10 +176,9 @@ class SimulateurTest {
 
     @Test
     void integration_jump_sauteInstruction() {
-        // JUMP 2 saute l'index 1 (LOAD R0, 99) et atterrit à l'index 2 (LOAD R0, 42)
         sim.saisirProgramme(
             "JUMP 2\n" +
-            "LOAD R0, 99\n" +  // ne doit PAS s'exécuter
+            "LOAD R0, 99\n" +
             "LOAD R0, 42\n" +
             "BREAK\n"
         );
@@ -213,17 +189,15 @@ class SimulateurTest {
 
     @Test
     void integration_beq_sautSiRegistresEgaux() {
-        // BEQ R0, R1, 4 : si R0==R1, saute à l'index 4 (BREAK), ignorant LOAD R2, 99
         sim.saisirProgramme(
             "LOAD R0, 7\n" +
             "LOAD R1, 7\n" +
             "BEQ R0, R1, 4\n" +
-            "LOAD R2, 99\n" +  // ne doit PAS s'exécuter
+            "LOAD R2, 99\n" +
             "BREAK\n"
         );
         sim.assembler();
         sim.executerProgramme();
-        // R2 doit rester à 0 (valeur initiale) car LOAD R2, 99 a été sauté
         assertEquals(0, sim.consulterRegistre(2));
     }
 }
