@@ -9,6 +9,11 @@ public class CPU {
     private ALU alu;
     private Programme programme;
 
+    /*
+     * Initialise le CPU avec la mémoire donnée, 16 registres et une ALU
+     *
+     * @param memoire La mémoire principale utilisée par le CPU
+     */
     public CPU(Memoire memoire) {
         this.memoire = memoire;
         this.alu = new ALU();
@@ -20,11 +25,19 @@ public class CPU {
         this.enRoute = false;
     }
 
+    /*
+     * Charge un programme assemblé dans le CPU
+     *
+     * @param prog Le programme à charger
+     */
     public void chargerProgramme(Programme prog) {
         this.programme = prog;
     
     }
 
+    /*
+     * Exécute le programme chargé instruction par instruction jusqu'à une instruction BREAK ou la fin du programme
+     */
     public void executerProgramme() {
         if (programme == null || !programme.estAssemble()) {
             throw new IllegalStateException("Aucun programme assemblé à exécuter");
@@ -43,10 +56,21 @@ public class CPU {
     }
 
 
+    /*
+     * Exécute une seule instruction sur le CPU
+     *
+     * @param i L'instruction à exécuter
+     */
     public void executerInstruction(Instruction i) {
         i.executer(this, memoire);
     }
 
+    /*
+     * Retourne le registre correspondant au numéro donné
+     *
+     * @param num Le numéro du registre (0 à 15)
+     * @return Le registre correspondant
+     */
     public Registre getRegistre(int num) {
         if (num < 0 || num >= 16) {
             throw new IllegalArgumentException("Numéro de registre invalide : " + num);
@@ -54,31 +78,62 @@ public class CPU {
         return registres[num];
     }
 
+    /*
+     * Retourne la mémoire principale du CPU
+     *
+     * @return La mémoire du CPU
+     */
     public Memoire getMemoire() {
         return memoire;
     }
 
 
+    /*
+     * Retourne l'unité arithmétique et logique (ALU) du CPU
+     *
+     * @return L'ALU du CPU
+     */
     public ALU getALU() {
         return alu;
     }
 
+    /*
+     * Retourne la valeur actuelle du compteur de programme
+     *
+     * @return La valeur du compteur de programme (PC)
+     */
     public int getPc() {
         return pc;
     }
 
+    /*
+     * Modifie le compteur de programme (utilisé par les instructions de branchement)
+     *
+     * @param adresse La nouvelle valeur du compteur de programme
+     */
     public void setPc(int adresse) {
         this.pc = adresse;
     }
 
+    /*
+     * Incrémente le compteur de programme de 1
+     */
     public void incrementerPC() {
         pc++;
     }
 
+    /*
+     * Arrête l'exécution du programme (déclenché par l'instruction BREAK)
+     */
     public void arreter() {
         this.enRoute = false;
     }
     
+    /*
+     * Indique si le CPU est en train d'exécuter un programme
+     *
+     * @return true si le CPU est en cours d'exécution, false sinon
+     */
     public boolean estEnRoute() {
         return enRoute;
     }

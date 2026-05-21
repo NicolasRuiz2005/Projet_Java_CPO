@@ -1,5 +1,8 @@
 package instructions;
 
+/*
+ * Enumère tous les types d'instructions supportés par le simulateur CPU
+ */
 public enum TypeInstruction {
 	LOAD_CONSTANTE,
     LOAD_MEMOIRE,

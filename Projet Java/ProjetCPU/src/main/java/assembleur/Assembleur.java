@@ -5,6 +5,11 @@ import instructions.TypeInstruction;
 
 public class Assembleur {
 
+    /*
+     * Assemble le code source du programme en une liste d'instructions exécutables
+     *
+     * @param prog Le programme dont le code source doit être assemblé
+     */
     public void assembler(Programme prog) {
         String[] lignes = prog.getCodeSource().split("\\r?\\n");
         for (int i = 0; i < lignes.length; i++) {
@@ -26,6 +31,13 @@ public class Assembleur {
         prog.marquerAssemble();
     }
 
+    /*
+     * Parse une ligne de code source et la convertit en une Instruction
+     *
+     * @param ligne La ligne de code source à analyser
+     * @param numLigne Le numéro de la ligne (pour les messages d'erreur)
+     * @return L'instruction correspondante, ou null si la ligne est vide
+     */
     private Instruction parserLigne(String ligne, int numLigne) {
         // sépare le mnémonique des opérandes
         String[] parts = ligne.split("\\s+", 2);
@@ -131,6 +143,12 @@ public class Assembleur {
         }
     }
 
+    /*
+     * Extrait le numéro de registre depuis une chaîne de type "R3"
+     *
+     * @param s La chaîne représentant le registre (ex : "R3")
+     * @return Le numéro du registre
+     */
     private int parseRegistre(String s) {
         s = s.trim().toUpperCase();
         if (!s.startsWith("R")) {
@@ -139,6 +157,12 @@ public class Assembleur {
         return Integer.parseInt(s.substring(1));
     }
 
+    /*
+     * Extrait l'adresse mémoire depuis une chaîne de type "[1234]"
+     *
+     * @param s La chaîne représentant l'adresse mémoire (ex : "[1234]")
+     * @return L'adresse mémoire sous forme d'entier
+     */
     private int parseAdresse(String s) {
         s = s.trim();
         if (s.startsWith("[") && s.endsWith("]")) {
