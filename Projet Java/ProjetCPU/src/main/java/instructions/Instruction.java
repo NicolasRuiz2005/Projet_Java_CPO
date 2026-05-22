@@ -4,57 +4,62 @@ import materiel.CPU;
 import materiel.Memoire;
 import materiel.ALU;
 
+/**
+ * Représente une instruction du jeu d'instructions du simulateur CPU.
+ * Encapsule le type d'instruction, son numéro de ligne source et ses opérandes,
+ * et fournit la méthode {@code executer} qui applique l'instruction sur le CPU et la mémoire.
+ */
 public class Instruction {
 
     private TypeInstruction type;
     private int ligne;
     private int[] operandes;
-    /*
-     * Crée une instruction avec son type, son numéro de ligne et ses opérandes
+
+    /**
+     * Crée une instruction avec son type, son numéro de ligne source et ses opérandes.
      *
-     * @param type Le type de l'instruction (ADD, SUB, LOAD, etc.)
-     * @param ligne Le numéro de ligne dans le code source (pour les messages d'erreur)
-     * @param operandes Les opérandes de l'instruction (numéros de registres ou adresses)
+     * @param type      le type de l'instruction (ADD, SUB, LOAD, etc.)
+     * @param ligne     le numéro de ligne dans le code source, utilisé pour les messages d'erreur
+     * @param operandes les opérandes de l'instruction (numéros de registres ou adresses mémoire)
      */
     public Instruction(TypeInstruction type, int ligne, int[] operandes) {
-
         this.type = type;
         this.ligne = ligne;
         this.operandes = operandes;
     }
 
-    /*
-     * Retourne le type de l'instruction
+    /**
+     * Retourne le type de l'instruction.
      *
-     * @return Le type de l'instruction
+     * @return le type de l'instruction
      */
     public TypeInstruction getType() {
         return type;
     }
 
-    /*
-     * Retourne le numéro de ligne de l'instruction dans le code source
+    /**
+     * Retourne le numéro de ligne de l'instruction dans le code source.
      *
-     * @return Le numéro de ligne
+     * @return le numéro de ligne
      */
     public int getLigne() {
         return ligne;
     }
 
-    /*
-     * Retourne les opérandes de l'instruction
+    /**
+     * Retourne les opérandes de l'instruction.
      *
-     * @return Le tableau des opérandes (numéros de registres ou adresses)
+     * @return le tableau des opérandes (numéros de registres ou adresses mémoire)
      */
     public int[] getOperandes() {
         return operandes;
     }
 
-    /*
-     * Exécute l'instruction sur le CPU et la mémoire donnés
+    /**
+     * Exécute l'instruction sur le CPU et la mémoire donnés.
      *
-     * @param cpu Le processeur sur lequel exécuter l'instruction
-     * @param mem La mémoire principale utilisée par l'instruction
+     * @param cpu le processeur sur lequel exécuter l'instruction
+     * @param mem la mémoire principale utilisée par l'instruction
      */
     public void executer(CPU cpu, Memoire mem) {
 

@@ -3,12 +3,20 @@ package assembleur;
 import instructions.Instruction;
 import instructions.TypeInstruction;
 
+/**
+ * Assembleur du simulateur CPU.
+ * Transforme le code source assembleur d'un {@link Programme} en une liste
+ * d'objets {@link Instruction} exécutables par le CPU.
+ * Supporte les mnémoniques : LOAD, STORE, ADD, SUB, MUL, DIV, OR, AND, XOR,
+ * JUMP, BEQ, BNE et BREAK, ainsi que les commentaires {@code //} et les lignes vides.
+ */
 public class Assembleur {
 
-    /*
-     * Assemble le code source du programme en une liste d'instructions exécutables
+    /**
+     * Assemble le code source du programme en une liste d'instructions exécutables.
      *
-     * @param prog Le programme dont le code source doit être assemblé
+     * @param prog le programme dont le code source doit être assemblé
+     * @throws RuntimeException si une ligne contient un mnémonique inconnu ou une syntaxe invalide
      */
     public void assembler(Programme prog) {
         String[] lignes = prog.getCodeSource().split("\\r?\\n");
@@ -31,12 +39,13 @@ public class Assembleur {
         prog.marquerAssemble();
     }
 
-    /*
-     * Parse une ligne de code source et la convertit en une Instruction
+    /**
+     * Parse une ligne de code source et la convertit en une Instruction.
      *
-     * @param ligne La ligne de code source à analyser
-     * @param numLigne Le numéro de la ligne (pour les messages d'erreur)
-     * @return L'instruction correspondante, ou null si la ligne est vide
+     * @param ligne    la ligne de code source à analyser (déjà nettoyée)
+     * @param numLigne le numéro de la ligne dans le fichier source, pour les messages d'erreur
+     * @return l'instruction correspondante
+     * @throws RuntimeException si le mnémonique est inconnu ou la syntaxe invalide
      */
     private Instruction parserLigne(String ligne, int numLigne) {
         // sépare le mnémonique des opérandes
@@ -143,11 +152,12 @@ public class Assembleur {
         }
     }
 
-    /*
-     * Extrait le numéro de registre depuis une chaîne de type "R3"
+    /**
+     * Extrait le numéro de registre depuis une chaîne de type "R3".
      *
-     * @param s La chaîne représentant le registre (ex : "R3")
-     * @return Le numéro du registre
+     * @param s la chaîne représentant le registre (ex : "R3" ou "r3")
+     * @return le numéro du registre
+     * @throws RuntimeException si la chaîne ne commence pas par 'R'
      */
     private int parseRegistre(String s) {
         s = s.trim().toUpperCase();
@@ -157,11 +167,12 @@ public class Assembleur {
         return Integer.parseInt(s.substring(1));
     }
 
-    /*
-     * Extrait l'adresse mémoire depuis une chaîne de type "[1234]"
+    /**
+     * Extrait l'adresse mémoire depuis une chaîne de type "[1234]".
      *
-     * @param s La chaîne représentant l'adresse mémoire (ex : "[1234]")
-     * @return L'adresse mémoire sous forme d'entier
+     * @param s la chaîne représentant l'adresse mémoire (ex : "[1234]")
+     * @return l'adresse mémoire sous forme d'entier
+     * @throws RuntimeException si la chaîne n'est pas entourée de crochets
      */
     private int parseAdresse(String s) {
         s = s.trim();
