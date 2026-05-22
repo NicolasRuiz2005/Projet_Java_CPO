@@ -176,8 +176,9 @@ class SimulateurTest {
 
     @Test
     void integration_jump_sauteInstruction() {
+        // JUMP 6 → addr 0-2 ; LOAD R0, 99 → addr 3-5 (sauté) ; LOAD R0, 42 → addr 6-8
         sim.saisirProgramme(
-            "JUMP 2\n" +
+            "JUMP 6\n" +
             "LOAD R0, 99\n" +
             "LOAD R0, 42\n" +
             "BREAK\n"
@@ -189,10 +190,12 @@ class SimulateurTest {
 
     @Test
     void integration_beq_sautSiRegistresEgaux() {
+        // LOAD R0, 7 → addr 0-2 ; LOAD R1, 7 → addr 3-5
+        // BEQ R0, R1, 14 → addr 6-10 ; LOAD R2, 99 → addr 11-13 (sauté) ; BREAK → addr 14
         sim.saisirProgramme(
             "LOAD R0, 7\n" +
             "LOAD R1, 7\n" +
-            "BEQ R0, R1, 4\n" +
+            "BEQ R0, R1, 14\n" +
             "LOAD R2, 99\n" +
             "BREAK\n"
         );

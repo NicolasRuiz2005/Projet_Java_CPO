@@ -16,6 +16,8 @@ public class Simulateur {
     private Memoire memoire;
     private Assembleur assembleur;
     private Programme programme;
+    /** Taille en octets du dernier programme assemblé — sert à effacer l'ancienne zone programme. */
+    private int finDernierProgramme = 0;
 
     /**
      * Initialise le simulateur avec une mémoire vierge, un CPU et un assembleur.
@@ -37,7 +39,8 @@ public class Simulateur {
     }
 
     /**
-     * Assemble le programme saisi et le charge dans le CPU.
+     * Assemble le programme saisi : remet la mémoire à zéro, puis écrit les octets
+     * du programme en mémoire à partir de l'adresse 0.
      *
      * @throws IllegalStateException si aucun programme n'a été saisi au préalable
      */
@@ -45,8 +48,13 @@ public class Simulateur {
         if (programme == null) {
             throw new IllegalStateException("Aucun programme à assembler");
         }
-        assembleur.assembler(programme);
-        cpu.chargerProgramme(programme);
+        // Efface uniquement l'ancienne zone programme pour éviter les octets parasites.
+        // Les données utilisateur situées en dehors de cette zone sont préservées.
+        for (int i = 0; i < finDernierProgramme; i++) {
+            memoire.ecrire(i, (byte) 0);
+        }
+        assembleur.assembler(programme, memoire);
+        finDernierProgramme = assembleur.getAdresseFinale();
     }
 
     /**
@@ -101,6 +109,15 @@ public class Simulateur {
             throw new IllegalArgumentException("Adresse mémoire invalide");
         }
         return memoire.lire(adr);
+    }
+
+    /**
+     * Retourne la valeur courante du compteur de programme (PC).
+     *
+     * @return l'adresse mémoire pointée par le PC après la dernière exécution
+     */
+    public int consulterPC() {
+        return cpu.getPc();
     }
 
     /**

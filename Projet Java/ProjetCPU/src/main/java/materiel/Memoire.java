@@ -50,6 +50,14 @@ public class Memoire {
     }
 
     /**
+     * Remet toutes les cases mémoire à zéro.
+     * Appelée par le simulateur avant chaque nouvel assemblage.
+     */
+    public void reinitialiser() {
+        java.util.Arrays.fill(cases, (byte) 0);
+    }
+
+    /**
      * Vérifie que l'adresse est dans les bornes valides de la mémoire.
      *
      * @param address l'adresse à vérifier
