@@ -49,20 +49,41 @@ public class Assembleur {
             case "LOAD": {
                 int reg = parseRegistre(args[0]);
                 if (args[1].startsWith("[")) {
-                    int adr = parseAdresse(args[1]);
-                    return new Instruction(TypeInstruction.LOAD_MEMOIRE, numLigne,
+                    // LOAD_INDEXE si un 3ème argument est présent
+                    // Format : LOAD R0, [100], R1
+                    if (args.length == 3) {
+                        int adrBase = parseAdresse(args[1]);
+                        int regIdx  = parseRegistre(args[2]);
+                        return new Instruction(TypeInstruction.LOAD_INDEXE, numLigne,
+                            new int[]{reg, adrBase, regIdx});
+                    // LOAD_MEMOIRE classique : LOAD R0, [100]
+                    } else {
+                        int adr = parseAdresse(args[1]);
+                        return new Instruction(TypeInstruction.LOAD_MEMOIRE, numLigne,
                             new int[]{reg, adr});
+                    }
                 } else {
+                    // LOAD_CONSTANTE : LOAD R0, 5
                     int val = Integer.parseInt(args[1]);
                     return new Instruction(TypeInstruction.LOAD_CONSTANTE, numLigne,
-                            new int[]{reg, val});
+                        new int[]{reg, val});
                 }
             }
             case "STORE": {
                 int reg = parseRegistre(args[0]);
-                int adr = parseAdresse(args[1]);
-                return new Instruction(TypeInstruction.STORE, numLigne,
+                // STORE_INDEXE si un 3ème argument est présent
+                // Format : STORE R0, [100], R1
+                if (args.length == 3) {
+                    int adrBase = parseAdresse(args[1]);
+                    int regIdx  = parseRegistre(args[2]);
+                    return new Instruction(TypeInstruction.STORE_INDEXE, numLigne,
+                        new int[]{reg, adrBase, regIdx});
+                // STORE classique : STORE R0, [100]
+                } else {
+                    int adr = parseAdresse(args[1]);
+                    return new Instruction(TypeInstruction.STORE, numLigne,
                         new int[]{reg, adr});
+                }
             }
             case "ADD": {
                 int r1 = parseRegistre(args[0]);
@@ -134,6 +155,32 @@ public class Assembleur {
                 return new Instruction(TypeInstruction.BNE, numLigne,
                         new int[]{r1, r2, adr});
             }
+
+            case "DATA": {
+                // Écrit des valeurs brutes en mémoire : DATA 0, 1, 2, 3
+                // Chaque valeur devient un opérande
+                int[] valeurs = new int[args.length];
+                for (int j = 0; j < args.length; j++) {
+                    valeurs[j] = Integer.parseInt(args[j].trim());
+                }
+                return new Instruction(TypeInstruction.DONNEE, numLigne, valeurs);
+            }
+
+            case "STRING": {
+                // Écrit les codes UTF-8 de chaque caractère en mémoire
+                // Format : STRING "abcd"
+                // On reconstruit la chaîne depuis le reste de la ligne
+                String chaine = reste.trim();
+                if (chaine.startsWith("\"") && chaine.endsWith("\"")) {
+                    chaine = chaine.substring(1, chaine.length() - 1);
+                }
+                int[] codes = new int[chaine.length()];
+                for (int j = 0; j < chaine.length(); j++) {
+                    codes[j] = chaine.charAt(j); // code UTF-8 du caractère
+                }
+                return new Instruction(TypeInstruction.CHAINE, numLigne, codes);
+            }
+
             case "BREAK": {
                 return new Instruction(TypeInstruction.BREAK, numLigne, new int[0]);
             }

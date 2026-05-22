@@ -1,8 +1,7 @@
 package materiel;
 
 public class Registre {
-     private int numero;
-
+    private int numero;
     private byte valeur;
 
     /*
