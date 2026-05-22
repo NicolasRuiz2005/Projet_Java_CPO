@@ -5,16 +5,22 @@ import java.util.List;
 
 import instructions.Instruction;
 
+/**
+ * Représente un programme assembleur composé d'un code source et de la liste
+ * d'instructions produites après assemblage.
+ * Un programme commence non assemblé ; il devient assemblé après l'appel à
+ * {@link Assembleur#assembler(Programme)}.
+ */
 public class Programme {
 
     private String codeSource;
     private boolean estAssemble;
     private List<Instruction> instructions;
 
-    /*
-     * Crée un programme à partir de son code source
+    /**
+     * Crée un programme à partir de son code source assembleur.
      *
-     * @param codeSource Le code source assembleur du programme
+     * @param codeSource le code source assembleur du programme
      */
     public Programme(String codeSource) {
         this.codeSource = codeSource;
@@ -22,54 +28,54 @@ public class Programme {
         this.instructions = new ArrayList<>();
     }
 
-    /*
-     * Retourne le code source du programme
+    /**
+     * Retourne le code source du programme.
      *
-     * @return Le code source assembleur
+     * @return le code source assembleur
      */
     public String getCodeSource() {
         return codeSource;
     }
 
-    /*
-     * Ajoute une instruction à la liste du programme
+    /**
+     * Ajoute une instruction à la fin de la liste du programme.
      *
-     * @param inst L'instruction à ajouter
+     * @param inst l'instruction à ajouter
      */
     public void ajouterInstruction(Instruction inst) {
         instructions.add(inst);
     }
 
-    /*
-     * Retourne l'instruction à l'index donné
+    /**
+     * Retourne l'instruction à l'index donné.
      *
-     * @param index L'index de l'instruction dans la liste
-     * @return L'instruction correspondante
+     * @param index l'index de l'instruction dans la liste (à partir de 0)
+     * @return l'instruction correspondante
      */
     public Instruction getInstruction(int index) {
         return instructions.get(index);
     }
 
-    /*
-     * Retourne le nombre d'instructions du programme
+    /**
+     * Retourne le nombre d'instructions du programme.
      *
-     * @return Le nombre d'instructions
+     * @return le nombre d'instructions
      */
     public int nombreInstructions() {
         return instructions.size();
     }
 
-    /*
-     * Marque le programme comme assemblé
+    /**
+     * Marque le programme comme assemblé.
      */
     public void marquerAssemble() {
         this.estAssemble = true;
     }
 
-    /*
-     * Indique si le programme a été assemblé
+    /**
+     * Indique si le programme a été assemblé.
      *
-     * @return true si le programme est assemblé, false sinon
+     * @return {@code true} si le programme est assemblé, {@code false} sinon
      */
     public boolean estAssemble() {
         return estAssemble;
